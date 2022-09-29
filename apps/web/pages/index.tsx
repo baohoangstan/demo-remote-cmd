@@ -100,7 +100,7 @@ export function Index() {
       </div>
       <div>
         <Space>
-          <Button disabled={state !== 'stopped'} onClick={start}>
+          <Button disabled={state !== 'stopped' || !cmd} onClick={start}>
             Start
           </Button>
           <Button disabled={state !== 'started'} onClick={stop}>
@@ -109,11 +109,14 @@ export function Index() {
           <Button onClick={() => setResult('')}>Clear</Button>
         </Space>
       </div>
+      <br />
       <div>
+        <label>Câu lệnh:</label>
         <Input value={cmd} onChange={(e) => setCmd(e.target.value)} />
       </div>
       <Divider />
       <div>
+        <label>Kết quả:</label>
         <TextArea value={result} />
       </div>
       {/* <div>

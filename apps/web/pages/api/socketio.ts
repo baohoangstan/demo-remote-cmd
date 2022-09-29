@@ -36,7 +36,13 @@ const socketio = async (req: NextApiRequest, res) => {
         _cwd = CWD,
         args = [...ARGS];
       if (data) {
-        const { cmd, cwd } = data;
+        let { cmd, cwd } = data;
+        cmd = cmd.trim();
+        cwd = cwd.trim();
+        while (cmd.indexOf('sudo') === 0) {
+          cmd = cmd.replace(/^sudo/, '').trim();
+        }
+
         const dataArr = cmd.split(' ');
         _cmd = dataArr[0];
         _cwd = cwd || _cwd;
@@ -51,6 +57,7 @@ const socketio = async (req: NextApiRequest, res) => {
       childProcess.on('exit', () => {
         socket.emit('stopped', true);
       });
+
       childProcess.stderr.on('data', (chunk) =>
         socket.emit('data', chunk.toString())
       );

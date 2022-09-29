@@ -26,21 +26,25 @@ const socketio = async (req: NextApiRequest, res) => {
 
   const CMD = 'ping';
   const ARGS = ['-c', '5', 'google.com.vn'];
+  const CWD = process.cwd();
 
   const onConnection = (socket) => {
     // messageHandler(io, socket);
     socket.on('start', (data) => {
       // interval = setInterval(() => socket.emit('data', { data: 'ok!' }), 1000);
-      let cmd = CMD,
+      let _cmd = CMD,
+        _cwd = CWD,
         args = [...ARGS];
       if (data) {
-        const dataArr = data.split(' ');
-        cmd = dataArr[0];
+        const { cmd, cwd } = data;
+        const dataArr = cmd.split(' ');
+        _cmd = dataArr[0];
+        _cwd = cwd || _cwd;
         dataArr.splice(0, 1);
         args = [...dataArr];
       }
 
-      childProcess = spawn(cmd, args);
+      childProcess = spawn(_cmd, args, { cwd: _cwd });
       childProcess.on('error', (e) => {
         socket.emit('error', e);
       });

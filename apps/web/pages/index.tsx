@@ -21,6 +21,7 @@ export function Index() {
   const [result, setResult] = useState('');
   const [state, setState] = useState('default');
   const [cmd, setCmd] = useState('ping -c 3 google.com.vn');
+  const [cwd, setCwd] = useState('');
 
   // const uploadFile = (file) => {
   //   const form = new FormData();
@@ -84,7 +85,7 @@ export function Index() {
   const start = () => {
     if (!socket || !cmd) return;
     setLoading(true);
-    socket.emit('start', cmd);
+    socket.emit('start', { cmd, cwd });
   };
 
   const stop = () => {
@@ -113,6 +114,15 @@ export function Index() {
       <div>
         <label>Câu lệnh:</label>
         <Input value={cmd} onChange={(e) => setCmd(e.target.value)} />
+      </div>
+      <br />
+      <div>
+        <label>Đường dẫn:</label>
+        <Input
+          value={cwd}
+          placeholder={'/home/user'}
+          onChange={(e) => setCwd(e.target.value)}
+        />
       </div>
       <Divider />
       <div>

@@ -2,6 +2,7 @@ import { AppProps } from 'next/app';
 import Head from 'next/head';
 // import './styles.less';
 import 'antd/dist/antd.less';
+import MainLayout from '../components/Layout/layout';
 
 function CustomApp({ Component, pageProps }: AppProps) {
   return (
@@ -9,9 +10,9 @@ function CustomApp({ Component, pageProps }: AppProps) {
       <Head>
         <title>Welcome to web!</title>
       </Head>
-      <main className="app">
+      <MainLayout>
         <Component {...pageProps} />
-      </main>
+      </MainLayout>
     </>
   );
 }

@@ -12,7 +12,7 @@ import {
 import { UploadOutlined } from '@ant-design/icons';
 import { useEffect, useRef, useState } from 'react';
 import io from 'socket.io-client';
-import TextArea from './components/text-area';
+import TextArea from '../components/TextAreaResult/text-area';
 
 let socket;
 

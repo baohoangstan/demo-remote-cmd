@@ -1,9 +1,9 @@
 import fs from 'fs';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-const imageApi = (req: NextApiRequest, res: NextApiResponse) => {
+const frameApi = (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'GET') {
-    console.log('[imageApi] =>', req.query);
+    console.log('[frameApi] =>', req.query);
     const { id, frame } = req.query;
     if (!id || !frame) return res.status(400).send('bad-request');
 
@@ -18,4 +18,4 @@ const imageApi = (req: NextApiRequest, res: NextApiResponse) => {
   }
   res.status(404).send('no-data');
 };
-export default imageApi;
+export default frameApi;

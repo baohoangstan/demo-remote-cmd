@@ -179,7 +179,7 @@ const Result = () => {
         const imgs = values.map((frameId) => {
           return (
             <Image
-              src={`/image/${record.id_doituong}?frame=${frameId}`}
+              src={`/api/frame/${record.id_doituong}?frame=${frameId}`}
               alt={frameId}
               placeholder={<Image preview={false} src="/images/logo.png" />}
               preview={{

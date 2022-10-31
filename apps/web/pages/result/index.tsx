@@ -7,11 +7,12 @@ import {
   Space,
   Table,
   Typography,
+  Image,
 } from 'antd';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import mockData from '../../mocks/data_hsv.json';
 import _ from 'lodash';
-import { SearchOutlined } from '@ant-design/icons';
+import { SearchOutlined, EyeOutlined } from '@ant-design/icons';
 import type { InputRef } from 'antd';
 import { ColumnType, FilterConfirmProps } from 'antd/lib/table/interface';
 import Highlighter from 'react-highlight-words';
@@ -32,9 +33,7 @@ interface DataType {
 type DataIndex = keyof DataType;
 
 const Result = () => {
-  const [data, setData] = useState(
-    _.orderBy(mockData, (val) => Number(val.id_doituong), 'asc')
-  );
+  const [data, setData] = useState([]);
 
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
@@ -176,21 +175,65 @@ const Result = () => {
       title: 'frame_id',
       dataIndex: 'frame_id',
       width: '600px',
-      render: (values, index, record) => {
-        return (
-          <Paragraph
-            ellipsis={{
-              expandable: true,
-              rows: 2,
-              symbol: <>Xem</>,
-            }}
-          >
-            {values.join(', ')}
-          </Paragraph>
-        );
+      render: (values, record, index) => {
+        const imgs = values.map((frameId) => {
+          return (
+            <Image
+              src={`/image/${record.id_doituong}?frame=${frameId}`}
+              alt={frameId}
+              placeholder={<Image preview={false} src="/images/logo.png" />}
+              preview={{
+                mask:
+                  values.length === 1 ? (
+                    <EyeOutlined />
+                  ) : (
+                    <span>+{values.length}</span>
+                  ),
+              }}
+              style={{ height: 60, maxWidth: 100 }}
+              hidden={index >= 3}
+              key={record.id + '-' + index}
+            />
+          );
+        });
+        return <Image.PreviewGroup>{imgs}</Image.PreviewGroup>;
+        // return (
+        //   <Paragraph
+        //     ellipsis={{
+        //       expandable: true,
+        //       rows: 2,
+        //       symbol: <>Xem</>,
+        //     }}
+        //   >
+        //     {values.join(', ')}
+        //   </Paragraph>
+        // );
       },
     },
   ];
+
+  const fetchData = async () => {
+    return await new Promise((resolve, reject) => {
+      fetch('/api/result')
+        .then((res) => {
+          if (res.status !== 200) {
+            reject(res.statusText);
+          }
+          res.json().then((value) => {
+            console.log('success', value);
+            setData(value);
+            resolve(true);
+          });
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
   return (
     <div>
       <Row>

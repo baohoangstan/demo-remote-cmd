@@ -184,10 +184,10 @@ const Result = () => {
               placeholder={<Image preview={false} src="/images/logo.png" />}
               preview={{
                 mask:
-                  values.length === 1 ? (
+                  values.length > 3 ? (
                     <EyeOutlined />
                   ) : (
-                    <span>+{values.length}</span>
+                    <span>+{values.length - 3}</span>
                   ),
               }}
               style={{ height: 60, maxWidth: 100 }}

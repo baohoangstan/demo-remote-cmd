@@ -14,7 +14,7 @@ const resultApi = (req: NextApiRequest, res: NextApiResponse) => {
           const frames = [];
 
           for (const frame_id of row.frame_id) {
-            if (frames.length >= 3) break;
+            if (frames.length >= 10) break;
             const framePath = `/home/dev/phuong/frame/frame_${row.id_doituong}_${frame_id}.jpg`;
             if (fs.existsSync(framePath)) {
               frames.push(frame_id);

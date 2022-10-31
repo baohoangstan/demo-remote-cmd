@@ -175,8 +175,8 @@ const Result = () => {
       title: 'frame_id',
       dataIndex: 'frame_id',
       width: '600px',
-      render: (values, record, index) => {
-        const imgs = values.map((frameId) => {
+      render: (values, record) => {
+        const imgs = values.map((frameId, index) => {
           return (
             <Image
               src={`/api/frame/${record.id_doituong}?frame=${frameId}`}

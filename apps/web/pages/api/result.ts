@@ -1,13 +1,14 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import fs from 'fs';
 import path from 'path';
+import _ from 'lodash';
 
 const resultApi = (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'GET') {
     const filePath = path.resolve('apps/web/mocks/data_hsv.json');
     console.log('filePath', filePath);
     if (fs.existsSync(filePath)) {
-      const data = JSON.parse(fs.readFileSync(filePath, { encoding: 'utf8' }));
+      let data = JSON.parse(fs.readFileSync(filePath, { encoding: 'utf8' }));
       if (data && data.length) {
         data.forEach((row, index) => {
           const frames = [];
@@ -21,6 +22,7 @@ const resultApi = (req: NextApiRequest, res: NextApiResponse) => {
           }
           data[index].frame_id = frames;
         });
+        data = _.orderBy(data, (value) => Number(value.id_doituong), 'asc');
       }
       return res.json(data);
     }
